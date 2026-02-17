@@ -24,9 +24,69 @@ Solutions are provided in **two implementations**:
 |---|---|---|
 | **Target** | $x_1 = q_1 + q_2 - 1$ | $x_1 = q_1 + q_2^2 - 1$ |
 | | $x_2 = q_1 - q_2 + 1$ | $x_2 = q_1 - q_2 + 1$ |
-| **Architecture** | `[2 → 2 → 2 → 2]` | `[2 → 2 → 4 → 2]` |
+| **Architecture** | `[2 → 2 → 2 → 2]` | `[2 → 6 → 2]` |
 | **Training samples** | 100 | 70 |
 | **Convergence target** | Loss < 10⁻¹¹ | Loss < 10⁻⁶ |
+
+---
+
+## Architecture & Hyperparameter Study (Problem 2)
+
+To find the best configuration for the nonlinear problem, three experiments were conducted. The winner of each is highlighted with a red border in the images.
+
+### 1 — Network Architecture Comparison
+
+Six architectures were evaluated using a combined score of **Loss × Epochs × Time** (lower = better) to balance accuracy and training efficiency.
+
+![Architecture Comparison](architectures_comparison.png)
+
+| Architecture | Best Loss | Score |
+|---|---|---|
+| `[2, 4, 2]` | 4.9544e-06 | 772.9 |
+| **`[2, 6, 2]` ✓** | **1.2493e-06** | **157.4** |
+| `[2, 8, 2]` | 1.6379e-06 | 167.1 |
+| `[2, 4, 4, 2]` | 3.4796e-06 | 329.9 |
+| `[2, 4, 8, 2]` | 1.6272e-05 | 1074.0 |
+| `[2, 8, 4, 2]` | 3.0055e-06 | 193.0 |
+
+**Result:** `[2, 6, 2]` achieves the lowest loss and the best combined score — one hidden layer with 6 neurons is sufficient for this problem.
+
+### 2 — Hidden Layer Activation Function Comparison
+
+With architecture fixed at `[2, 6, 2]`, three activation functions for the hidden layers were compared.
+
+![Activation Function Comparison](hiddenlayers_activationfunktions_comparison.png)
+
+| Activation | Final Loss | Time |
+|---|---|---|
+| **Tanh ✓** | **3.0168e-06** | 3 min 0.5 s |
+| Sigmoid | 1.0749e-05 | 2 min 27.7 s |
+| Leaky ReLU | 4.6824e-03 | 2 min 8.9 s |
+
+**Result:** `tanh` converges to the lowest loss and is used for all hidden layers in the final network.
+
+### 3 — Leaky ReLU Parameter Comparison (Input Layer)
+
+The input layer uses a Leaky ReLU. The negative-slope parameter $b$ was tuned while keeping $a = 1$ (positive slope unchanged).
+
+![Leaky ReLU Parameter Comparison](leakyrelu_parameters_comparison.png)
+
+| Parameters | Final Loss | Time |
+|---|---|---|
+| a = 0.7, b = 0.3 | 6.6136e-05 | 1 min 28 s |
+| a = 1, b = 0.1 | 2.4811e-05 | 1 min 30 s |
+| **a = 1, b = 0.01 ✓** | **1.1825e-05** | **1 min 27 s** |
+
+**Result:** A small negative slope (`b = 0.01`) avoids dead neurons while keeping gradient flow close to standard ReLU. This parametrization is used for the input layer in the final network.
+
+### Final Configuration (Problem 2)
+
+| Component | Choice |
+|---|---|
+| Architecture | `[2, 6, 2]` |
+| Input layer | Leaky ReLU (a = 1, b = 0.01) |
+| Hidden layers | Tanh |
+| Output layer | Identity (linear) |
 
 ---
 
@@ -82,8 +142,8 @@ Each layer computes $z = xW + b$, then applies an activation:
 
 | Layer | Activation |
 |---|---|
-| Hidden 1 | Parametric ReLU ($\alpha^+ = 1.0,\ \alpha^- = 0.1$) |
-| Hidden 2+ | Tanh |
+| Input layer | Leaky ReLU ($a = 1,\ b = 0.01$) |
+| Hidden layers | Tanh |
 | Output | Linear (identity) |
 
 ### Gradient Computation
@@ -137,7 +197,7 @@ All implemented in `activation.py` and usable via `Activation.<name>(x)`:
 Want to experiment? The key knobs are at the top of each training script:
 
 ```python
-ARCH = [2, 2, 4, 2]    # change network topology
+ARCH = [2, 6, 2]        # change network topology
 ALPHA = 0.001           # learning rate
 WEIGHT_DECAY = 0.0      # L2 regularization strength
 NUMBER_OF_EPOCHS = 10**5
