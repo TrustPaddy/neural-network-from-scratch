@@ -101,11 +101,15 @@ nn-from-scratch/
 │   ├── loesung2.py        # Training script — nonlinear target problem
 │   └── requirements.txt   # Dependencies (numpy, matplotlib)
 ├── matlab/
+│   ├── Activation.m       # Activation functions
+│   ├── myRandVector.m     # Random vector utility
 │   ├── loesung1.m         # Training script — linear target problem
 │   └── loesung2.m         # Training script — nonlinear target problem
-├── .vscode/               # VS Code debug launch configs
-│   ├── launch.json
-│   └── settings.json
+├── architectures_comparison.png
+├── hiddenlayers_activationfunktions_comparison.png
+├── leakyrelu_parameters_comparison.png
+├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
@@ -178,7 +182,7 @@ with bias correction $\hat{m}_t = m_t / (1 - \beta_1^t)$ and $\hat{v}_t = v_t / 
 
 ## Available Activation Functions
 
-All implemented in `activation.py` and usable via `Activation.<name>(x)`:
+All implemented in `python/activation.py` and usable via `Activation.<name>(x)`:
 
 | Function | Formula |
 |---|---|
@@ -203,13 +207,7 @@ WEIGHT_DECAY = 0.0      # L2 regularization strength
 NUMBER_OF_EPOCHS = 10**5
 ```
 
-You can also swap activations in `network.py` → `forward()`.
-
----
-
-## VS Code Integration
-
-The workspace includes ready-to-use debug configurations. Open the folder in VS Code and press **F5** to launch either solution with the integrated debugger.
+You can also swap activations in `python/network.py` → `forward()`.
 
 ---
 

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(test:*)",
+      "Bash(git mv:*)",
+      "Bash(REPO=\"c:/Users/pse18/Dokumente/FraUas/6. Semester/RML/Python/neural-network-from-scratch\")",
+      "Bash(git -C:*)",
+      "Bash(git -C \"$REPO\" mv requirements.txt python/requirements.txt)"
+    ]
+  }
+}
