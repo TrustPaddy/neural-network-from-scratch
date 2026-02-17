@@ -1,9 +1,10 @@
 # 🧠 Neural Network from Scratch
 
-> A minimal neural network implementation in pure Python/NumPy — no PyTorch, no TensorFlow, just math.
+> A minimal neural network implementation from scratch — available in both **Python/NumPy** and **MATLAB**. No PyTorch, no TensorFlow, just math.
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![NumPy](https://img.shields.io/badge/NumPy-only_dependency-013243?logo=numpy&logoColor=white)](https://numpy.org)
+[![MATLAB](https://img.shields.io/badge/MATLAB-R2021b%2B-0076A8?logo=mathworks&logoColor=white)](https://mathworks.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -12,7 +13,10 @@
 
 This project implements a **fully connected feedforward neural network** entirely from scratch to learn mathematical functions from input-output pairs. No autograd — gradients are computed via **central finite differences**, and weights are updated with **AdamW**.
 
-Originally written in MATLAB, then ported to Python for clarity and speed.
+Solutions are provided in **two implementations**:
+
+- **Python** (`python/`) — pure NumPy, readable and fast
+- **MATLAB** (`matlab/`) — original implementation, self-contained
 
 ### Two problems are solved:
 
@@ -30,12 +34,16 @@ Originally written in MATLAB, then ported to Python for clarity and speed.
 
 ```
 nn-from-scratch/
-├── activation.py      # Activation functions (ReLU, paraReLU, Sigmoid, Tanh, ELU, Softmax)
-├── network.py         # Forward pass, MSE loss, numerical gradient, utilities
-├── loesung1.py        # Training script — linear target problem
-├── loesung2.py        # Training script — nonlinear target problem
-├── requirements.txt   # Dependencies (numpy, matplotlib)
-├── .vscode/           # VS Code debug launch configs
+├── python/
+│   ├── activation.py      # Activation functions (ReLU, paraReLU, Sigmoid, Tanh, ELU, Softmax)
+│   ├── network.py         # Forward pass, MSE loss, numerical gradient, utilities
+│   ├── loesung1.py        # Training script — linear target problem
+│   ├── loesung2.py        # Training script — nonlinear target problem
+│   └── requirements.txt   # Dependencies (numpy, matplotlib)
+├── matlab/
+│   ├── loesung1.m         # Training script — linear target problem
+│   └── loesung2.m         # Training script — nonlinear target problem
+├── .vscode/               # VS Code debug launch configs
 │   ├── launch.json
 │   └── settings.json
 └── README.md
@@ -45,10 +53,12 @@ nn-from-scratch/
 
 ## Quick Start
 
+### Python
+
 ```bash
 # Clone the repo
 git clone https://github.com/<your-username>/nn-from-scratch.git
-cd nn-from-scratch
+cd nn-from-scratch/python
 
 # Install dependencies
 pip install -r requirements.txt
@@ -57,6 +67,10 @@ pip install -r requirements.txt
 python loesung1.py   # linear problem
 python loesung2.py   # nonlinear problem
 ```
+
+### MATLAB
+
+Open `matlab/loesung1.m` or `matlab/loesung2.m` in MATLAB and press **Run** (or use `F5`). No additional toolboxes required.
 
 ---
 
@@ -139,6 +153,3 @@ The workspace includes ready-to-use debug configurations. Open the folder in VS 
 
 ---
 
-## License
-
-MIT — do whatever you want with it.
